@@ -40,8 +40,8 @@ public class LocationRetBroadcastReceiver extends BroadcastReceiver {
         }
         mCursor.close();
 
-        Log.i("broadcastReceiver-PIN", "#" + pin + "#");
-        Intent i = new Intent(context, LocationRetrieval.class);
+        Log.i("broadcastReceiver-PIN", pin);
+        Intent i = new Intent(context,LocationRetrieval.class);
         i.putExtra("pin",pin);
         context.startService(i);
     }
