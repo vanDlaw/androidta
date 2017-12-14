@@ -37,9 +37,15 @@ public class LocationRetrieval extends Service {
     TimerTask timerTask;
     String Longitude = "";
     String Pin ="";
+    Context ctx;
 
-    LocationRetrieval(){
+    public LocationRetrieval(){
+        Log.i("LocRetService","Started");
+    }
 
+    public LocationRetrieval(Context AppsContext){
+        this.ctx = AppsContext;
+        Log.i("LocRetService","Started");
     }
 
 
@@ -51,19 +57,15 @@ public class LocationRetrieval extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent,flags,startId);
         Pin = intent.getExtras().getString("pin");
-        Log.d("PIN", Pin);
+        Log.i("LRS-PIN", Pin);
         defineTimerTask();
         return Service.START_STICKY;
     }
 
-    public void startTimer() {
-        timer = new Timer();
-        defineTimerTask();
-        timer.schedule(timerTask, 10000);
-    }
-
     public void defineTimerTask() {
+        Log.i("execMethod","getLoc");
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         LocationListener locationListener = new LocationListener() {
@@ -72,8 +74,8 @@ public class LocationRetrieval extends Service {
                 Latitude = location.getLatitude() + "";
                 Longitude = location.getLongitude() + "";
 
-                Log.d("LAT", Latitude);
-                Log.d("LONG", Longitude);
+                Log.i("LAT", Latitude);
+                Log.i("LONG", Longitude);
 
                 AsyncHttpClient client = new AsyncHttpClient();
                 RequestParams params = new RequestParams();
@@ -81,19 +83,20 @@ public class LocationRetrieval extends Service {
                 params.put("longitude",Longitude);
                 params.put("pin",Pin);
 
-                client.post("http://192.168.1.6/TA/public/user/lokasi", params, new JsonHttpResponseHandler(){
+                Log.i("SendToServer", Latitude+" "+Longitude+" " + Pin);
+
+                client.post("http://128.199.190.244/index.php/user/lokasi", params, new JsonHttpResponseHandler(){
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         super.onSuccess(statusCode, headers, response);
-                        Log.d("send to server",String.valueOf(response));
+                        Log.i("Retval",String.valueOf(response));
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         super.onFailure(statusCode, headers, responseString, throwable);
-
-                        Log.d("res", responseString);
-                        Log.d("res", statusCode+"");
+                        Log.i("res", responseString);
+                        Log.i("res", statusCode+"");
                     }
                 });
             }
@@ -115,13 +118,20 @@ public class LocationRetrieval extends Service {
         };
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.d("Condition", "PERMISSION DENIED");
+            Log.i("Condition", "PERMISSION DENIED");
             return;
         }
 
         // 900000 = 15 menit
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 900000, 0, locationListener);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
+        Log.i("Service", "onDestroy!!!");
+        Intent broadIntent = new Intent("com.example.ervan.ta2.pelacak.RestartService");
+        sendBroadcast(broadIntent);
+    }
 }

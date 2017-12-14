@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/ta_bg4"
     tools:context="com.example.ervan.ta2pelacak.activity.MulaiActivity">
 
     <TextView
@@ -18,43 +19,59 @@
         android:id="@+id/textView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textSize="36sp"
-        android:textStyle="normal|bold" />
+        android:textSize="42sp"
+        android:textStyle="normal|bold"
+        android:fontFamily="casual" />
 
     <Button
         android:text="Device1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="77dp"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="124dp"
         android:id="@+id/LacakDev1"
+        android:scaleType="fitCenter"
+        android:background="@drawable/klik_btn_biasa"
+        android:adjustViewBounds="true"
         android:layout_below="@+id/textView"
-        android:layout_alignRight="@+id/textView"
-        android:layout_alignEnd="@+id/textView"
         android:layout_alignLeft="@+id/textView"
         android:layout_alignStart="@+id/textView" />
 
     <Button
         android:text="Device2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:id="@+id/LacakDev2"
+        android:scaleType="fitCenter"
+        android:background="@drawable/klik_btn_biasa"
+        android:adjustViewBounds="true"
+        android:layout_marginTop="36dp"
         android:layout_below="@+id/LacakDev1"
         android:layout_alignLeft="@+id/LacakDev1"
-        android:layout_alignStart="@+id/LacakDev1"
-        android:layout_marginTop="34dp"
-        android:id="@+id/LacakDev2"
-        android:layout_alignRight="@+id/LacakDev1"
-        android:layout_alignEnd="@+id/LacakDev1" />
+        android:layout_alignStart="@+id/LacakDev1" />
 
     <Button
         android:text="Device3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="41dp"
         android:id="@+id/LacakDev3"
+        android:scaleType="fitCenter"
+        android:background="@drawable/klik_btn_biasa"
+        android:adjustViewBounds="true"
         android:layout_below="@+id/LacakDev2"
         android:layout_alignLeft="@+id/LacakDev2"
-        android:layout_alignStart="@+id/LacakDev2"
-        android:layout_alignRight="@+id/LacakDev2"
-        android:layout_alignEnd="@+id/LacakDev2" />
+        android:layout_alignStart="@+id/LacakDev2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView4"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp"
+        android:text="silahkan pilih device yang dilacak"
+        android:fontFamily="casual"
+        android:textStyle="normal|bold"
+        android:textSize="18sp" />
 
 </RelativeLayout>

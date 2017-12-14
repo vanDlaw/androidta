@@ -50,7 +50,7 @@ public class SettingActivity extends AppCompatActivity {
         TextView pin=(TextView) findViewById(R.id.setting_pin);
         String defaultValue = getResources().getString(R.string.pin);
         String PIN = sharedPref.getString(getString(R.string.pin), defaultValue);
-        Log.d(defaultValue, PIN);
+        Log.i(defaultValue, PIN);
         pin.setText(PIN);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -63,33 +63,41 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final String spinnervalue= device.getSelectedItem().toString();
-                String inputpinvalue= Inputpin.getText().toString();
-                editor.putString(spinnervalue,inputpinvalue);
-                editor.commit();
+                final String inputpinvalue= Inputpin.getText().toString();
+                Log.i("spiner", spinnervalue+" "+inputpinvalue);
 
                 AsyncHttpClient client = new AsyncHttpClient();
-                client.get("http://192.168.1.6/TA/public/user/get/"+inputpinvalue, new JsonHttpResponseHandler(){
+                client.get("http://128.199.190.244/index.php/user/get/"+inputpinvalue, new JsonHttpResponseHandler(){
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        Log.d("response", String.valueOf(response));
+                        Log.i("response", String.valueOf(response));
                         try {
-                           JSONObject data = response.getJSONObject("data");
-                            editor.putString(spinnervalue+"_lat",data.getString("latitude"));
-                            editor.putString(spinnervalue+"_long",data.getString("longitude"));
-                            editor.commit();
+
+                            Log.i("status", response.getString("status"));
+                            if(response.getString("status").equals("200")){
+                                toast.setText("data berhasil disimpan");
+                                JSONObject data = response.getJSONObject("data");
+                                editor.putString(spinnervalue+"_lat",data.getString("latitude"));
+                                editor.putString(spinnervalue+"_long",data.getString("longitude"));
+                                editor.putString(spinnervalue,inputpinvalue);
+                                editor.apply();
+                            }else {
+                                toast.setText("data yang dimasukan salah");
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        toast.show();
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         super.onFailure(statusCode, headers, responseString, throwable);
-                        Log.d(statusCode+"",responseString);
+                        Log.i(statusCode+"",responseString);
                     }
                 });
 
-                toast.show();
+
             }
         });
     }

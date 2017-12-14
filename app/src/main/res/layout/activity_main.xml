@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/ta_bg">
 
     <LinearLayout
         android:layout_marginTop="340dp"
@@ -13,18 +14,28 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_mulai"
+        <ImageButton
             android:onClick="GotoMulai"
-            android:id="@+id/button" />
+            android:id="@+id/button"
+            android:src="@drawable/klik_btn_mulai"
+            android:background="#00000000"
+            android:layout_height="40dp"
+            android:layout_width="100dp"
+            android:adjustViewBounds="true"
+            android:layout_marginRight="5dp"
+            android:scaleType="fitCenter" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_setting"
-            android:onClick="GotoSetting" />
+        <ImageButton
+            android:onClick="GotoSetting"
+            android:layout_marginLeft="5dp"
+            android:id="@+id/buttonsetting"
+            android:src="@drawable/klik_btn_setting"
+            android:background="#00000000"
+            android:layout_height="40dp"
+            android:layout_width="100dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -32,13 +43,16 @@
         android:gravity="center"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="20dp"
         >
-        <Button
+        <ImageButton
             android:id="@+id/keluarbutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_keluar"
-            android:onClick="keluar" />
+            android:src="@drawable/klik_btn_keluar"
+            android:background="#00000000"
+            android:layout_height="40dp"
+            android:layout_width="100dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter" />
     </LinearLayout>
 
 </LinearLayout>

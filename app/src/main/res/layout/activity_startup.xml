@@ -8,7 +8,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.ervan.ta2pelacak.activity.StartupActivity">
+    tools:context="com.example.ervan.ta2pelacak.activity.StartupActivity"
+    android:background="@drawable/ta_bg">
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
@@ -26,4 +27,5 @@
         android:layout_marginTop="68dp"
         android:id="@+id/pin"
         android:textSize="30sp" />
+
 </RelativeLayout>
