@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "242144056892",
+    "firebase_url": "https://ta2pelacak.firebaseio.com",
+    "project_id": "ta2pelacak",
+    "storage_bucket": "ta2pelacak.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242144056892:android:c374c1bd26b801ae",
+        "android_client_info": {
+          "package_name": "com.example.ervan.ta2pelacak"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "242144056892-7i79e147jm2a9pfr01slujl07siokgj5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ervan.ta2pelacak",
+            "certificate_hash": "166C37504ED858CDB895A7CB7540C1CB30FA4DBF"
+          }
+        },
+        {
+          "client_id": "242144056892-04blugcsatsn34u46e5mpbrdr5a4jbmc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBicHH1Dko0OgYZHQ18nQ2tS3gYRJI0eIY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "242144056892-04blugcsatsn34u46e5mpbrdr5a4jbmc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
