@@ -3,14 +3,17 @@ package com.example.ervan.ta2pelacak.service;
 import android.Manifest;
 import android.app.IntentService;
 import android.app.Service;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.UserDictionary;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -35,15 +38,31 @@ public class LocationRetrieval extends Service {
     String Latitude     = "";
     String Longitude    = "";
     String Pin          = "";
+    String PinNew       = "";
     Context ctx;
 
-    public LocationRetrieval(){
-        Log.i("LocRetService","Started");
-    }
+    public LocationRetrieval(){ Log.i("LocRetServiceDefault","Started"); }
 
     public LocationRetrieval(Context AppsContext){
         this.ctx = AppsContext;
         Log.i("LocRetService","Started");
+        String[] mProjection = {
+                UserDictionary.Words.APP_ID,
+                UserDictionary.Words._ID,
+                UserDictionary.Words.WORD
+        };
+        Cursor mCursor = AppsContext.getContentResolver().query(
+                UserDictionary.Words.CONTENT_URI,
+                mProjection,null,null,null
+        );
+        Log.i("QUERY FROM SERVICE", " " + mCursor.getCount());
+        while(mCursor.moveToNext()) {
+            String item = mCursor.getString(mCursor.getColumnIndex(UserDictionary.Words.WORD));
+            Log.i("CI-Service", item);
+            PinNew  = item.substring(item.length() - 6);
+            Log.i("PinNew", PinNew);
+        }
+        mCursor.close();
     }
 
     @Nullable
@@ -54,12 +73,22 @@ public class LocationRetrieval extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        super.onStartCommand(intent,flags,startId);
+        super.onStartCommand(intent, flags, startId);
         Log.i("INTENT", String.valueOf(intent));
-        Pin = intent.getExtras().getString("pin");
-        Log.i("LRS-PIN", Pin);
+        if (intent == null){
+            Log.i("PinNew", "#" + PinNew + "#");
+//            stopMyService();
+        } else {
+            Pin = intent.getExtras().getString("pin");
+        }
+        Log.i("LRS-PIN-BR", "#" + Pin + "#");
         defineTimerTask();
         return Service.START_STICKY_COMPATIBILITY;
+    }
+
+    private void stopMyService(){
+        stopForeground(true);
+        stopSelf();
     }
 
     public void defineTimerTask() {
@@ -69,26 +98,22 @@ public class LocationRetrieval extends Service {
         LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Log.i("LL", "New Position");
-                Latitude = location.getLatitude() + "";
-                Longitude = location.getLongitude() + "";
-
-                Log.i("LAT", Latitude);
-                Log.i("LONG", Longitude);
+                Latitude    = location.getLatitude() + "";
+                Longitude   = location.getLongitude() + "";
 
                 AsyncHttpClient client = new AsyncHttpClient();
-                RequestParams params = new RequestParams();
-                params.put("latitude",Latitude);
-                params.put("longitude",Longitude);
-                params.put("pin",Pin);
+                RequestParams params    = new RequestParams();
+                params.put("latitude", Latitude);
+                params.put("longitude", Longitude);
+                params.put("pin", Pin);
 
-                Log.i("SendToServer", Latitude+" "+Longitude+" " + Pin);
+                Log.i("STATUS||LAT||LONG||PIN", "NEW POSITION || " + Latitude + " || " + Longitude + " || " + Pin);
 
                 client.post("http://128.199.190.244/index.php/user/lokasi", params, new JsonHttpResponseHandler(){
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         super.onSuccess(statusCode, headers, response);
-                        Log.i("Retval",String.valueOf(response));
+//                        Log.i("Retval",String.valueOf(response));
                     }
 
                     @Override
@@ -131,8 +156,9 @@ public class LocationRetrieval extends Service {
     public void onDestroy() {
         super.onDestroy();
 
-        Log.i("Service", "onDestroy!!!");
+        Log.i("LocRetService", "onDestroy!!!");
         Intent broadIntent = new Intent("com.example.ervan.ta2.pelacak.RestartService");
         sendBroadcast(broadIntent);
+        Log.i("Broadcast", "Sent");
     }
 }

@@ -1,9 +1,7 @@
 package com.example.ervan.ta2pelacak.activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ActivityManager;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.example.ervan.ta2pelacak.R;
 import com.example.ervan.ta2pelacak.service.LocationRetrieval;
@@ -49,21 +46,20 @@ public class StartupActivity extends AppCompatActivity {
         LocRet = new LocationRetrieval(getCtx());
         serviceIntent = new Intent(getCtx(), LocRet.getClass());
 
-        final TextView pin = (TextView) findViewById(R.id.pin);
         final String Mypref="mypref";
         SharedPreferences sharedPref = this.getSharedPreferences(Mypref,Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPref.edit();
 
-        final Intent startMain = new Intent(this,MainActivity.class);
+        final Intent startMain = new Intent(this, MainActivity.class);
 
-        AsyncHttpClient client = new AsyncHttpClient();
-        TelephonyManager  tMgr=(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        String imei= tMgr.getDeviceId();
+        AsyncHttpClient client  = new AsyncHttpClient();
+        TelephonyManager  tMgr  =(TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        String imei             = tMgr.getDeviceId();
 
         RequestParams params = new RequestParams();
         params.put("imei",imei);
 
-        Log.i("LALAA",""+ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION));
+        Log.i("IS GRANTED",""+(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == 0));
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
@@ -107,9 +103,11 @@ public class StartupActivity extends AppCompatActivity {
                     );
                     Log.i("resultURI",resulturi.toString());
 
-                    if(!isMyServiceRunning(LocRet.getClass())){
+                    boolean serviceStatus   = isMyServiceRunning(LocRet.getClass());
+                    Log.i("Service Status","" + serviceStatus);
+                    if(!serviceStatus){
                         Intent i = new Intent(getApplicationContext(), LocationRetrieval.class);
-                        i.putExtra("pin",response.getString("data"));
+                        i.putExtra("pin", response.getString("data"));
                         getApplicationContext().startService(i);
                         Log.i("SERVICE", "WILL START");
                     }
