@@ -32,11 +32,9 @@ import cz.msebera.android.httpclient.Header;
  */
 
 public class LocationRetrieval extends Service {
-    String Latitude = "";
-    Timer timer;
-    TimerTask timerTask;
-    String Longitude = "";
-    String Pin ="";
+    String Latitude     = "";
+    String Longitude    = "";
+    String Pin          = "";
     Context ctx;
 
     public LocationRetrieval(){
@@ -47,7 +45,6 @@ public class LocationRetrieval extends Service {
         this.ctx = AppsContext;
         Log.i("LocRetService","Started");
     }
-
 
     @Nullable
     @Override
@@ -61,7 +58,7 @@ public class LocationRetrieval extends Service {
         Pin = intent.getExtras().getString("pin");
         Log.i("LRS-PIN", Pin);
         defineTimerTask();
-        return Service.START_STICKY;
+        return Service.START_STICKY_COMPATIBILITY;
     }
 
     public void defineTimerTask() {
@@ -71,6 +68,7 @@ public class LocationRetrieval extends Service {
         LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                Log.i("LL", "New Position");
                 Latitude = location.getLatitude() + "";
                 Longitude = location.getLongitude() + "";
 
@@ -122,8 +120,10 @@ public class LocationRetrieval extends Service {
             return;
         }
 
-        // 900000 = 15 menit
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 900000, 0, locationListener);
+        // 900000   = 15 menit
+        // 10000    = 10 detik
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, locationListener);
     }
 
     @Override
