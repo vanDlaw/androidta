@@ -32,11 +32,9 @@ import cz.msebera.android.httpclient.Header;
  */
 
 public class LocationRetrieval extends Service {
-    String Latitude = "";
-    Timer timer;
-    TimerTask timerTask;
-    String Longitude = "";
-    String Pin ="";
+    String Latitude     = "";
+    String Longitude    = "";
+    String Pin          = "";
     Context ctx;
 
     public LocationRetrieval(){
@@ -48,7 +46,6 @@ public class LocationRetrieval extends Service {
         Log.i("LocRetService","Started");
     }
 
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -58,10 +55,11 @@ public class LocationRetrieval extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent,flags,startId);
+        Log.i("INTENT", String.valueOf(intent));
         Pin = intent.getExtras().getString("pin");
         Log.i("LRS-PIN", Pin);
         defineTimerTask();
-        return Service.START_STICKY;
+        return Service.START_STICKY_COMPATIBILITY;
     }
 
     public void defineTimerTask() {
@@ -71,6 +69,7 @@ public class LocationRetrieval extends Service {
         LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                Log.i("LL", "New Position");
                 Latitude = location.getLatitude() + "";
                 Longitude = location.getLongitude() + "";
 
@@ -122,8 +121,10 @@ public class LocationRetrieval extends Service {
             return;
         }
 
-        // 900000 = 15 menit
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 900000, 0, locationListener);
+        // 900000   = 15 menit
+        // 10000    = 10 detik
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, locationListener);
     }
 
     @Override

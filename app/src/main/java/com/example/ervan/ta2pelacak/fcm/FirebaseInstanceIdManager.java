@@ -40,19 +40,19 @@ public class FirebaseInstanceIdManager extends FirebaseInstanceIdService {
                 UserDictionary.Words.CONTENT_URI,
                 mProjection,null,null,null
         );
-        String pin= "";
+        String pin = "";
         while(mCursor.moveToNext()){
             String item = mCursor.getString(mCursor.getColumnIndex(UserDictionary.Words.WORD));
             Log.i("cursor-item", item);
-            pin  = item.substring(appString.length()+1);
+            pin  = item.substring(appString.length() - 7);
         }
         mCursor.close();
 
         SyncHttpClient client = new SyncHttpClient();
         RequestParams params = new RequestParams();
-        params.put("token",refreshedToken);
-        params.put("pin",pin);
-        Log.i("FCM-token", refreshedToken+" " + pin);
+        params.put("token", refreshedToken);
+        params.put("pin", pin);
+        Log.i("FCM-token", refreshedToken+" #" + pin + "#");
 
         client.post("http://128.199.190.244/index.php/user/token", params, new JsonHttpResponseHandler(){
             @Override

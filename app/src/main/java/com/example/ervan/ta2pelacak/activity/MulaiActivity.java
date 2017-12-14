@@ -39,12 +39,15 @@ public class MulaiActivity extends AppCompatActivity {
         SharedPreferences sharedPref = this.getSharedPreferences(Mypref, Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPref.edit();
 
-        String PINdevice1=sharedPref.getString("Device1","()");
-        String PINdevice2=sharedPref.getString("Device2","()");
-        String PINdevice3=sharedPref.getString("Device3","()");
+        String nama1=sharedPref.getString("Device1" + "-NAMA","Device 1");
+        String nama2=sharedPref.getString("Device2" + "-NAMA","Device 2");
+        String nama3=sharedPref.getString("Device3" + "-NAMA","Device 3");
+        String pin1=sharedPref.getString("Device1" + "-PIN","");
+        String pin2=sharedPref.getString("Device2" + "-PIN","");
+        String pin3=sharedPref.getString("Device3" + "-PIN","");
 
-        dev1.setText("Device1 ("+PINdevice1+")");
-        if(PINdevice1=="()"){
+        dev1.setText(nama1+" ("+pin1+")");
+        if(pin1=="()"){
             dev1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -68,8 +71,8 @@ public class MulaiActivity extends AppCompatActivity {
                 }
             });
         }
-        dev2.setText("Device2 ("+PINdevice2+")");
-        if(PINdevice2=="()"){
+        dev2.setText(nama2+" ("+pin2+")");
+        if(pin2=="()"){
             dev2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -92,8 +95,8 @@ public class MulaiActivity extends AppCompatActivity {
                 }
             });
         }
-        dev3.setText("Device3 ("+PINdevice3+")");
-        if(PINdevice3=="()"){
+        dev3.setText(nama3+" ("+pin3+")");
+        if(pin3=="()"){
             dev3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

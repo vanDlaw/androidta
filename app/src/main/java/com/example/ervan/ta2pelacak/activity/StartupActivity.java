@@ -86,10 +86,10 @@ public class StartupActivity extends AppCompatActivity {
                     editor.commit();
 
                     // DELETE ALL
-                    String selClause = UserDictionary.Words.WORD + " LIKE ? ";
-                    String[] selArgs = {"%com.ervan.ta2pelacak%"};
-                    int deletedRows = 0;
-                    deletedRows = getContentResolver().delete(
+                    String selClause    = UserDictionary.Words.WORD + " LIKE ? ";
+                    String[] selArgs    = {"%com.ervan.ta2pelacak%"};
+                    int deletedRows     = 0;
+                    deletedRows         = getContentResolver().delete(
                             UserDictionary.Words.CONTENT_URI,
                             selClause,
                             selArgs

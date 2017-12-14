@@ -39,6 +39,7 @@ public class SettingActivity extends AppCompatActivity {
         final Spinner device=(Spinner) findViewById(R.id.spinner_device);
 
         final EditText Inputpin=(EditText) findViewById(R.id.editPIN);
+        final EditText Inputname=(EditText) findViewById(R.id.editName);
 
         Context context = getApplicationContext();
         CharSequence text = "Data Berhasil Disimpan";
@@ -64,40 +65,47 @@ public class SettingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final String spinnervalue= device.getSelectedItem().toString();
                 final String inputpinvalue= Inputpin.getText().toString();
+                final String inputnamavalue= Inputname.getText().toString();
+
                 Log.i("spiner", spinnervalue+" "+inputpinvalue);
+                Log.i("pin", inputpinvalue.length() + "");
+                Log.i("nama", inputnamavalue.length() + "");
 
-                AsyncHttpClient client = new AsyncHttpClient();
-                client.get("http://128.199.190.244/index.php/user/get/"+inputpinvalue, new JsonHttpResponseHandler(){
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        Log.i("response", String.valueOf(response));
-                        try {
+                if (inputpinvalue.length() == 0 || inputnamavalue.length() == 0) {
+                    toast.setText("Terdapat isian yang kosong");
+                } else {
+                    AsyncHttpClient client = new AsyncHttpClient();
+                    client.get("http://128.199.190.244/index.php/user/get/"+inputpinvalue, new JsonHttpResponseHandler(){
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                            Log.i("response", String.valueOf(response));
+                            try {
 
-                            Log.i("status", response.getString("status"));
-                            if(response.getString("status").equals("200")){
-                                toast.setText("data berhasil disimpan");
-                                JSONObject data = response.getJSONObject("data");
-                                editor.putString(spinnervalue+"_lat",data.getString("latitude"));
-                                editor.putString(spinnervalue+"_long",data.getString("longitude"));
-                                editor.putString(spinnervalue,inputpinvalue);
-                                editor.apply();
-                            }else {
-                                toast.setText("data yang dimasukan salah");
+                                Log.i("status", response.getString("status"));
+                                if(response.getString("status").equals("200")){
+                                    toast.setText("data berhasil disimpan");
+                                    JSONObject data = response.getJSONObject("data");
+                                    editor.putString(spinnervalue+"_lat",data.getString("latitude"));
+                                    editor.putString(spinnervalue+"_long",data.getString("longitude"));
+                                    editor.putString(spinnervalue+"-PIN",inputpinvalue);
+                                    editor.putString(spinnervalue+"-NAMA",inputnamavalue);
+                                    editor.apply();
+                                }else {
+                                    toast.setText("data yang dimasukan salah");
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            toast.show();
                         }
-                        toast.show();
-                    }
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        super.onFailure(statusCode, headers, responseString, throwable);
-                        Log.i(statusCode+"",responseString);
-                    }
-                });
-
-
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                            super.onFailure(statusCode, headers, responseString, throwable);
+                            Log.i(statusCode+"",responseString);
+                        }
+                    });
+                }
             }
         });
     }

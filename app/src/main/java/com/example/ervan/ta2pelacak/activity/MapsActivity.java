@@ -55,9 +55,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Float lat = Float.parseFloat(sharedPref.getString("Device"+Device+"_lat",""));
         Float longi = Float.parseFloat(sharedPref.getString("Device"+Device+"_long",""));
+        String nama = (String) sharedPref.getString("Device" + Device +"-NAMA", "");
 
         LatLng dev_loc= new LatLng(lat,longi);
-        mMap.addMarker(new MarkerOptions().position(dev_loc).title("Orang yang anda lacak disini"));
+        mMap.addMarker(new MarkerOptions().position(dev_loc).title(nama + " berada disini"));
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(dev_loc)

@@ -19,7 +19,7 @@ public class LocationRetBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.i(LocationRetrieval.class.getSimpleName(), "Service Stop!!!");
-        final String appString = "com.ervan.ta2pelacak";
+        final String appString= "com.example.ervan.ta2pelacak";
 
         // GET DATA FROM CONTENT PROVIDER
         String[] mProjection = {
@@ -36,12 +36,12 @@ public class LocationRetBroadcastReceiver extends BroadcastReceiver {
         while(mCursor.moveToNext()){
             String item = mCursor.getString(mCursor.getColumnIndex(UserDictionary.Words.WORD));
             Log.i("cursor-item", item);
-            pin  = item.substring(appString.length()+1);
+            pin  = item.substring(appString.length() - 7);
         }
         mCursor.close();
 
-        Log.i("broadcastReceiver-PIN", pin);
-        Intent i = new Intent(context,LocationRetrieval.class);
+        Log.i("broadcastReceiver-PIN", "#" + pin + "#");
+        Intent i = new Intent(context, LocationRetrieval.class);
         i.putExtra("pin",pin);
         context.startService(i);
     }
